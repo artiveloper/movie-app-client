@@ -1,13 +1,15 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
+import {useMutation} from '@apollo/client';
+import {TOGGLE_LIKE} from '../graphqls/Movie';
 
 const Container = styled.div`
-  height: 380px;
+  height: 400px;
+  border-radius: 7px;
   width: 100%;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  overflow: hidden;
-  border-radius: 7px;
+  background-color: transparent;
 `
 
 const Poster = styled.div`
@@ -16,14 +18,25 @@ const Poster = styled.div`
   width: 100%;
   background-size: cover;
   background-position: center center;
+  border-radius: 7px;
 `
 
-const Movie = ({id, bg}) => (
-    <Container>
-        <Link to={`/${id}`}>
-            <Poster bg={bg} />
-        </Link>
-    </Container>
-)
+const Movie = ({id, bg, isLiked}) => {
+    const [likeMovie] = useMutation(TOGGLE_LIKE, {
+        variables: {
+            id: parseInt(id),
+            isLiked
+        }
+    })
+
+    return (
+        <Container>
+            <Link to={`/${id}`}>
+                <Poster bg={bg}/>
+            </Link>
+            <button onClick={likeMovie}>{isLiked ? 'UnLike' : 'Like'}</button>
+        </Container>
+    )
+}
 
 export default Movie

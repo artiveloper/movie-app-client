@@ -1,17 +1,8 @@
 import React from 'react'
-import {gql} from 'apollo-boost'
 import {useQuery} from '@apollo/react-hooks'
 import styled from 'styled-components'
 import Movie from '../components/Movie'
-
-const GET_MOVIES = gql`
-    {
-        movies {
-            id
-            medium_cover_image
-        }
-    }
-`
+import {GET_MOVIES} from '../graphqls/Movie';
 
 const Movies = styled.div`
   display: grid;
@@ -38,10 +29,9 @@ const Home = () => {
 
             <Movies>
                 {data?.movies?.map(m => (
-                    <Movie key={m.id} id={m.id} bg={m.medium_cover_image}/>
+                    <Movie key={m.id} id={m.id} isLiked={m.isLiked} bg={m.medium_cover_image}/>
                 ))}
             </Movies>
-
         </Container>
     )
 }

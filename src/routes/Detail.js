@@ -1,25 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import {useParams} from 'react-router-dom'
-import {gql} from 'apollo-boost'
 import {useQuery} from '@apollo/react-hooks'
 import Movie from '../components/Movie';
-
-const GET_MOVIE = gql`
-    query getMovie($id: Int!) {
-        movie(id: $id) {
-            title
-            medium_cover_image
-            language
-            rating
-            description_intro
-        }
-        suggestions(id: $id) {
-            id
-            medium_cover_image
-        }
-    }
-`
+import {GET_MOVIE} from '../graphqls/Movie';
 
 const Container = styled.div`
   height: 100vh;
@@ -71,8 +55,8 @@ const Detail = () => {
     let {id} = useParams()
     id = parseInt(id)
 
-    const {loading, error, data} = useQuery(
-        GET_MOVIE, {
+    const {loading, error, data} = useQuery(GET_MOVIE,
+        {
             variables: {id}
         }
     )
